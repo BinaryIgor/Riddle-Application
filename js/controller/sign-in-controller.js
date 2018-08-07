@@ -1,6 +1,9 @@
 import {executeGetRequest} from "../service/http-service.js";
 
 export class SignInController {
+	constructor(modalController) {
+		this.modalController = modalController;
+	}
 	init() {
 		let inputs = document.querySelectorAll("input");
 		let signInInputs = {usernameEmail: inputs[0], password: inputs[1]};
