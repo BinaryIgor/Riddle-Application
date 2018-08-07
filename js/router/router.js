@@ -3,10 +3,11 @@ export class Router {
 		this.routes = routes;
 		this.rootElement = rootElement;
 	}
-	init() {
+	init(onHashChangedListener) {
 		let scope = this;
 		window.addEventListener('hashchange', function(event) {
 			scope.hasChanged(scope, scope.routes);
+			onHashChangedListener();
 		});
 		this.hasChanged();
 	}
