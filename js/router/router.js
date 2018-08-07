@@ -3,11 +3,10 @@ export class Router {
 		this.routes = routes;
 		this.rootElement = rootElement;
 	}
-	init(onHashChangedListener) {
+	init() {
 		let scope = this;
 		window.addEventListener('hashchange', function(event) {
 			scope.hasChanged(scope, scope.routes);
-			onHashChangedListener();
 		});
 		this.hasChanged();
 	}
@@ -18,15 +17,17 @@ export class Router {
 				(window.location.hash.length < 1 && route.defaultRoute);
 			if (goToRoute) {
 				rootElement.innerHTML = route.htmlTemplate;
+				route.controller.init();
 				break;
 			}
 		}
 	}
 };
 export class Route {
-	constructor(name, htmlTemplate, defaultRoute) {
+	constructor(name, htmlTemplate, controller, defaultRoute) {
 		this.name = name;
 		this.htmlTemplate = htmlTemplate;
+		this.controller = controller;
 		this.defaultRoute = defaultRoute;
 	}
 	isActiveRoute(hashedPath) {
