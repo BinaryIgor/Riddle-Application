@@ -17,6 +17,6 @@ export class ModalController {
 		this.modalTextParagraph.innerHTML = text;
 	}
 	showModal() {
-		this.modal.style.display = "block";
+		this.modal.style.display = "flex";
 	}
 };

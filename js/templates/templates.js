@@ -2,7 +2,7 @@ let modalTemplate =
 	`<div class="modal">
 		<div class="modal-content">
 			<span class="close">&times;</span>
-			<h2 id="modalTitleHeader"><h2>
+			<h2 id="modalTitleHeader"></h2>
 			<p id="modalTextParagraph"></p>
 		</div>
 	</div>`;
