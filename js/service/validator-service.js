@@ -1,16 +1,28 @@
+import {CONSTANTS} from '../constants/constants.js'; 
+
 function validateString(string, minLength) {
-	return !string && string.length >= minLength;
+	return string && string.length >= minLength;
 }
 
-export function validateUsername(username) {
-	return validateString(username, 3);
+function validateUsername(username) {
+	return validateString(username, CONSTANTS.MIN_USERNAME_LENGTH);
 }
 
-export function validateEmail(email) {
-	let validBase = validateString(email, 5);
-	return validBase && email.indexOf("@") >= 3 && email.indexOf(".") >= 4;
+function validateEmail(email) {
+	let validBase = validateString(email, CONSTANTS.MIN_EMAIL_LENGTH);
+	return validBase && email.indexOf("@") > 0 && email.indexOf(".") > 1;
 }
 
-export function validatePassword(password) {
-	return validateString(password, 10);
+function validatePassword(password) {
+	return validateString(password, CONSTANTS.MIN_PASSWORD_LENGTH);
 }
+
+export function validateSignInUser(user) {
+	return (validateEmail(user.nameEmail) || validateUsername(user.nameEmail)) && validatePassword(user.password);
+}
+
+export const signUpUserValidator = {
+	validateEmail: (email) => {return validateEmail(email)}, 
+	validateName: (name) => {return validateUsername(name)},
+	validatePassword: (password) => {return validatePassword(password)}
+};

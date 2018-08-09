@@ -1,4 +1,6 @@
-let modalTemplate = 
+import {STRINGS} from "../constants/constants.js";
+
+let modal = 
 	`<div class="modal">
 		<div class="modal-content">
 			<span class="close">&times;</span>
@@ -7,23 +9,29 @@ let modalTemplate =
 		</div>
 	</div>`;
 
-let signInTemplate =
+let signIn =
 	`<h1>Riddle</h1>
-	<input type="text" placeholder="username/email"></input>
-	<input type="password" placeholder="password"></input>
-	<button id="signInButton">Sign In</button>
-	<a href="#sign-up">New? Sign Up.</a>`
-	+ modalTemplate;
+	<input type="text" placeholder="${STRINGS.NAME_EMAIL}"></input>
+	<input type="password" placeholder="${STRINGS.PASSWORD}"></input>
+	<button id="signInButton">${STRINGS.SIGN_IN}</button>
+	<a href="#sign-up">${STRINGS.NEW_SIGN_UP}</a>`
+	+ modal;
 	
-let signUpTemplate = 
+let signUp = 
 	`<h1>Sign Up</h1>
-	<input type="email" placeholder="email"></input>
-	<input type="text" placeholder="name"></input>
-	<input type="password" placeholder="password"></input>
-	<button id="signUpButton">Sign Up</button>`
-	+ modalTemplate;
-
+	<input type="email" placeholder="${STRINGS.EMAIL}"></input>
+	<input type="text" placeholder="${STRINGS.NAME}"></input>
+	<input type="password" placeholder="${STRINGS.PASSWORD}"></input>
+	<button id="signUpButton">${STRINGS.SIGN_UP}</button>`
+	+ modal;
+		
+let mainPage = 
+	`<div class="tile">${STRINGS.RANKING}</div>
+	<div class="tile">${STRINGS.GAMES}</div>
+	<div class="tile">${STRINGS.PROFILE}</div>`;
+		
 export const templates = {
-	signInTemplate: signInTemplate,
-	signUpTemplate: signUpTemplate
+	signIn: signIn,
+	signUp: signUp,
+	mainPage: mainPage
 };
