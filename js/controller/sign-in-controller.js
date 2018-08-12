@@ -13,7 +13,11 @@ export class SignInController {
 		this.modalController = modalController;
 	}
 	init() {
-		let inputs = document.querySelectorAll("input");
+		let form = document.querySelector("form");
+		form.addEventListener("submit", function(event) {
+			event.preventDefault();
+		});
+		let inputs = form.getElementsByTagName("input");
 		let signInInputs = {nameEmail: inputs[0], password: inputs[1]};
 		document.getElementById("signInButton").onclick = () => {
 			let user = {nameEmail: signInInputs.nameEmail.value, password: signInInputs.password.value};

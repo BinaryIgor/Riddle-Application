@@ -24,7 +24,8 @@ export class SignUpController {
 	}
 	
 	init() {
-		let inputs = document.querySelectorAll("input");
+		let form = document.querySelector("form");
+		let inputs = form.getElementsByTagName("input");
 		let signUpInputs = {email: inputs[0], name: inputs[1], password: inputs[2]};
 		document.getElementById("signUpButton").onclick = () => onSignUpButtonClickListener(signUpInputs, this.modalController);
 		this.modalController.init();

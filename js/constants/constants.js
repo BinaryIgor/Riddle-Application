@@ -20,11 +20,23 @@ export const STRINGS = {
 	PASSWORD: "password",
 	RANKING: "Ranking",
 	GAMES: "Games",
-	PROFILE: "Profile"
+	PROFILE: "Profile",
+	EDIT: "Edit"
 };
 
 export const ROUTES = {
 	SIGN_IN: "sign-in",
 	SIGN_UP: "sign-up",
-	MAIN_PAGE: "main-page"
+	MAIN_PAGE: "main-page",
+	PROFILE: "profile"
+};
+
+const ENDPOINTS_BASE = "https://jsonplaceholder.typicode.com/posts";
+export const ENDPOINTS = {
+	SIGN_IN: ENDPOINTS_BASE + "",
+	SIGN_UP: ENDPOINTS_BASE + "",
+	REFRESH_TOKEN: ENDPOINTS_BASE + "",
+	RANKING: ENDPOINTS_BASE + "",
+	CURRENT_USER_PROFILE: ENDPOINTS_BASE + "",
+	userProfile: (id) => {return ENDPOINTS_BASE + ""}	
 };

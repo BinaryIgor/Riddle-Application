@@ -16,7 +16,7 @@ export class Router {
 			let goToRoute = (window.location.hash.length > 0 && route.isActiveRoute(window.location.hash.substr(1))) || 
 				(window.location.hash.length < 1 && route.defaultRoute);
 			if (goToRoute) {
-				rootElement.innerHTML = route.htmlTemplate;
+				this.rootElement.innerHTML = route.htmlTemplate;
 				route.controller.init();
 				break;
 			}

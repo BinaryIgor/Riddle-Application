@@ -13,9 +13,14 @@ body {
 	background: rgba(137, 157, 188, 0.7);
 }
 
-.center {
+.center, .center-full-width {
 	text-align: center;
 }
+
+.center-full-width {
+	width: 100%;
+}
+
 
 h1,h2 {
 	font-family: Georgia, serif;
@@ -26,17 +31,33 @@ h1 {
 	text-decoration: underline;
 }
 
-.full-screen {
-	height: 100%;
-	width: 100%;
-}
-
-.flex-container {
+.flex-container , .flex-container-full-screen {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.full-screen, .flex-container-full-screen {
+	height: 100%;
+	width: 100%;
+}
+
+.grid-container , .grid-container-two-columns {
+	display: grid;
+	padding: 10px;
+	grid-gap: 10px;
+}
+
+.grid-container-two-columns {
+	grid-template-columns: auto auto;
+}
+
+.profile-img {
+	grid-column: 1 / span 2;
+	height: 100px;
+	width: 75px;
 }
 
 div.tile {
