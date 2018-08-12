@@ -25,6 +25,7 @@ export class SignUpController {
 	
 	init() {
 		let form = document.querySelector("form");
+		form.addEventListener("submit", function(event) {event.preventDefault();});
 		let inputs = form.getElementsByTagName("input");
 		let signUpInputs = {email: inputs[0], name: inputs[1], password: inputs[2]};
 		document.getElementById("signUpButton").onclick = () => onSignUpButtonClickListener(signUpInputs, this.modalController);

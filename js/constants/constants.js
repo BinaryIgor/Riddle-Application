@@ -21,7 +21,8 @@ export const STRINGS = {
 	RANKING: "Ranking",
 	GAMES: "Games",
 	PROFILE: "Profile",
-	EDIT: "Edit"
+	EDIT: "Edit",
+	SAVE: "Save"
 };
 
 export const ROUTES = {

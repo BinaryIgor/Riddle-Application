@@ -9,6 +9,16 @@ let modal =
 		</div>
 	</div>`;
 
+let inputModal =
+	`<div class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<h2 id="modalTitleHeader"></h2>
+			<input id="modalInput" value="ddd"></input>
+			<button id="saveButton">${STRINGS.SAVE}</button>
+		</div>
+	</div>`;
+	
 let signIn =
 	`<div class="flex-container-full-screen">
 		<h1>Riddle</h1>
@@ -20,8 +30,8 @@ let signIn =
 			<button id="signInButton">${STRINGS.SIGN_IN}</button>
 		</form>
 		<a href="#sign-up">${STRINGS.NEW_SIGN_UP}</a>
-	</div>`
-	+ modal;
+		${modal}
+	</div>`;
 	
 let signUp = 
 	`<div class="flex-container-full-screen">
@@ -35,8 +45,8 @@ let signUp =
 			</br>
 			<button id="signUpButton">${STRINGS.SIGN_UP}</button>
 		</form>
-	</div>`
-	+ modal;
+		${modal}
+	</div>`;
 		
 let mainPage = 
 	`<div class="flex-container-full-screen">
@@ -47,17 +57,22 @@ let mainPage =
 		
 		
 let profile =
-	`<div class="grid-container-two-columns full-screen">
+	`<div class="flex-container-full-screen">
 		<img class="profile-img"></img>
-		<input style="grid-column: 1 / span 2" type="file"></input>
-		<input type="email"></input>
-		<button>${STRINGS.EDIT}</button>
-		<input type="text"></input>
-		<button>${STRINGS.EDIT}</button>
-		<input type="password"></input>
-		<button>${STRINGS.EDIT}</button>
-		<p>${STRINGS.RANKING}</p>
-		<p id="rankingParagraph"></p>
+		<div class="center-full-width">
+			<input type="file"></input>
+			<button style="display: none">${STRINGS.SAVE}</button>
+			</br>
+			<input type="email" readonly></input>
+			<button>${STRINGS.EDIT}</button>
+			</br>
+			<input type="text" readonly></input>
+			<button>${STRINGS.EDIT}</button>
+			</br>
+			<input type="password" readonly></input>
+			<button>${STRINGS.EDIT}</button>
+		</div>
+		${inputModal}
 	</div>`;
 		
 export const templates = {

@@ -55,9 +55,8 @@ h1 {
 }
 
 .profile-img {
-	grid-column: 1 / span 2;
-	height: 100px;
-	width: 75px;
+	height: 40%;
+	width: 20%;
 }
 
 div.tile {
