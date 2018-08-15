@@ -26,3 +26,20 @@ export const signUpUserValidator = {
 	validateName: (name) => {return validateUsername(name)},
 	validatePassword: (password) => {return validatePassword(password)}
 };
+
+export function isNotNullAndHaveDefinedFields(object) {
+	if (!object) {
+		return false;
+	}
+	let keys = Object.keys(object);
+	if (keys.length < 1) {
+		return false;
+	}
+	for (let key of keys) {
+		if (!object[key]) {
+			return false;
+		}
+	}
+	return true;
+};
+ 

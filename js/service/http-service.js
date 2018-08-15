@@ -14,25 +14,25 @@ const HTTP_HEADERS_VALUES = {
 	BEARER: "Bearer "	
 };
 const REQUEST_STATE_READY = 4;
-const HTTP_STATUS_OK = 200;
-const HTTP_STATUS_CREATED = 201;
+const HTTP_STATUS_OK_MIN = 200;
+const HTTP_STATUS_OK_MAX = 299;
 
 function executeRequest(url, method, data) {
-	return new Promise(resolve => {
+	return new Promise((resolve, reject) => {
 		let xmlHttpRequest = new XMLHttpRequest();
-		xmlHttpRequest.onreadystatechange = function() {
-			if(this.readyState != REQUEST_STATE_READY) {
-				return;
-			}
-			if (this.status == HTTP_STATUS_OK || this.status == HTTP_STATUS_CREATED) {
+		xmlHttpRequest.onload = function() {
+			if (this.status >= HTTP_STATUS_OK_MIN && this.status <= HTTP_STATUS_OK_MAX) {
 				resolve(this.responseText);
 			} else {
-				throw this.responseText;
+				reject(this.responseText);
 			}
+		};
+		xmlHttpRequest.onerror = function() {
+			reject(this.responseText);
 		};
 		xmlHttpRequest.open(method, url, true);
 		if (data) {
-			xmlHttpRequest.send(data);
+			xmlHttpRequest.send(JSON.stringify(data));
 		} else {
 			xmlHttpRequest.send();
 		}

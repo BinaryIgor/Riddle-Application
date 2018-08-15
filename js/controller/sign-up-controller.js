@@ -1,22 +1,40 @@
 import {STRINGS} from "../constants/constants.js";
-import {executeGetRequest} from "../service/http-service.js";
+import {ENDPOINTS} from "../constants/constants.js";
+import {executePostRequest} from "../service/http-service.js";
 import {signUpUserValidator} from "../service/validator-service.js";
 
-function onSignUpButtonClickListener(signUpInputs, modalController) {
-	let user = {email: signUpInputs.email.value, name: signUpInputs.name.value, password: signUpInputs.password.value};
+function onSignUpButtonClickListener() {
+	let user = {email: this.signUpInputs.email.value, name: this.signUpInputs.name.value, password: this.signUpInputs.password.value};
 	if (!signUpUserValidator.validateEmail(user.email)) {
-		modalController.setTitle(STRINGS.INVALID_EMAIL);
+		this.modalController.setTitle(STRINGS.INVALID_EMAIL);
 	} else if (!signUpUserValidator.validateName(user.name)) {
-		modalController.setTitle(STRINGS.INVALID_USERNAME);
+		this.modalController.setTitle(STRINGS.INVALID_USERNAME);
 	} else if (!signUpUserValidator.validatePassword(user.password)) {
-		modalController.setTitle(STRINGS.INVALID_PASSWORD);
+		this.modalController.setTitle(STRINGS.INVALID_PASSWORD);
 	} else {
-		modalController.setTitle(STRINGS.SIGN_UP_SUCCESS_TITLE);
-		modalController.setText(STRINGS.SIGN_UP_SUCCESS_TEXT);
+		signUp.call(this, user);
+		return;
 	}
-	modalController.showModal();
+	this.modalController.showModal();
 };
 
+function signUp(user) {
+	executePostRequest(ENDPOINTS.SIGN_UP, user).then(response => {
+		clearInputs.call(this);
+		this.modalController.setTitle(STRINGS.SIGN_UP_SUCCESS_TITLE);
+		this.modalController.setText(STRINGS.SIGN_UP_SUCCESS_TEXT);
+		this.modalController.showModal();
+	}).catch(exception => {
+		this.modalController.setTitle(STRINGS.SIGN_UP_FAILURE_TITLE);
+		this.modalController.setText(exception);
+		this.modalController.showModal();
+	});
+};
+
+function clearInputs() {
+	let inputs = this.signUpInputs;
+	inputs.email.value = inputs.name.value = inputs.password.value = "";
+}
 
 export class SignUpController {
 	constructor(modalController) {
@@ -24,11 +42,11 @@ export class SignUpController {
 	}
 	
 	init() {
-		let form = document.querySelector("form");
-		form.addEventListener("submit", function(event) {event.preventDefault();});
-		let inputs = form.getElementsByTagName("input");
-		let signUpInputs = {email: inputs[0], name: inputs[1], password: inputs[2]};
-		document.getElementById("signUpButton").onclick = () => onSignUpButtonClickListener(signUpInputs, this.modalController);
+		this.form = document.querySelector("form");
+		this.form.addEventListener("submit", function(event) {event.preventDefault();});
+		let inputs = this.form.getElementsByTagName("input");
+		this.signUpInputs = {email: inputs[0], name: inputs[1], password: inputs[2]};
+		document.getElementById("signUpButton").onclick = () => onSignUpButtonClickListener.call(this);
 		this.modalController.init();
 	}
 };
