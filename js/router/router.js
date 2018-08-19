@@ -1,19 +1,45 @@
-export class Router {
+export const Router = (function() {
+	let instance;
+
+	function createInstance(routes, rootElement) {
+		if (instance) {
+			throw "Instance already exists";
+		}
+		instance = new RouterClass(routes, rootElement);
+	}
+	
+	function getInstance() {
+		if (!instance) {
+			throw "Instance does not exist";
+		}
+		return instance;
+	}
+	
+	return {
+		createInstance: (routes, rootElement) => createInstance(routes, rootElement),
+		getInstance: () => {return getInstance();}
+	};
+})();
+
+
+class RouterClass {
 	constructor(routes, rootElement) {
 		this.routes = routes;
 		this.rootElement = rootElement;
 	}
+	
 	init() {
 		let scope = this;
 		window.addEventListener('hashchange', function(event) {
-			scope.hasChanged(scope, scope.routes);
+			scope.onHashChanged(scope, scope.routes);
 		});
-		this.hasChanged();
+		this.onHashChanged();
 	}
-	hasChanged() {
+	
+	onHashChanged() {
 		for (let i = 0; i < this.routes.length; i++) {
 			let route = this.routes[i];
-			let goToRoute = (window.location.hash.length > 0 && route.isActiveRoute(window.location.hash.substr(1))) || 
+			let goToRoute = (location.hash.length > 0 && route.isActiveRoute(location.hash.substr(1))) || 
 				(window.location.hash.length < 1 && route.defaultRoute);
 			if (goToRoute) {
 				this.rootElement.innerHTML = route.htmlTemplate;
@@ -22,7 +48,17 @@ export class Router {
 			}
 		}
 	}
+	
+	pushRoute(routeName) {
+		location.href = "#" + routeName;
+	}
+	
+	replaceRoute(routeName) {
+		history.replaceState(null, null, "index.html#" + routeName);
+		this.onHashChanged();
+	}
 };
+
 export class Route {
 	constructor(name, htmlTemplate, controller, defaultRoute) {
 		this.name = name;
@@ -30,7 +66,8 @@ export class Route {
 		this.controller = controller;
 		this.defaultRoute = defaultRoute;
 	}
+	
 	isActiveRoute(hashedPath) {
-		return hashedPath.replace('#', '') == this.name;
+		return hashedPath == this.name;
 	}
 }

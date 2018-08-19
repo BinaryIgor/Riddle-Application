@@ -53,6 +53,7 @@ let mainPage =
 		<div class="tile">${STRINGS.RANKING}</div>
 		<div class="tile">${STRINGS.GAMES}</div>
 		<div class="tile">${STRINGS.PROFILE}</div>
+		<div class="tile">${STRINGS.SIGN_OUT}</div>
 	</div>`;
 		
 		

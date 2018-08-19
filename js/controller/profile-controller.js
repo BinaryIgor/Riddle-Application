@@ -19,9 +19,7 @@ export class ProfileController {
 		let profileImage = document.querySelector("img");
 		profileImage.src = "images/background.jpg";
 		let inputs = document.querySelectorAll("input");
-		console.log(`Have ${inputs.length} inputs`);
 		let buttons = document.querySelectorAll("button");
-		console.log(`Have ${buttons.length} buttons`);
 		inputs[0].onchange = function() {
 			profileImage.src = URL.createObjectURL(this.files[0]);
 			buttons[0].style.display = "inline";

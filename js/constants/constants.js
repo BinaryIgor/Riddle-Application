@@ -17,7 +17,9 @@ export const STRINGS = {
 	SIGN_UP_ACTIVATION_FAILURE_TITLE: "Your account has not been activated",
 	NAME_EMAIL: "name/email",
 	SIGN_IN: "Sign In",
+	SIGN_IN_FAILURE_TITLE: "Wrong name/email or password",
 	SIGN_UP: "Sign Up",
+	SIGN_OUT: "Sign Out",
 	NEW_SIGN_UP: "New? Sign up.",
 	EMAIL: "email",
 	NAME: "name",
@@ -36,12 +38,18 @@ export const ROUTES = {
 	PROFILE: "profile"
 };
 
+export const SESSION_STORAGE_KEYS = {
+	ACCESS_TOKEN: "access token",
+	REFRESH_TOKEN: "refresh token",
+	EXPIRATION_DATE: "expiration date"
+};
+
 const ENDPOINTS_BASE = "http://localhost:9000/riddle/";
 export const ENDPOINTS = {
-	SIGN_IN: ENDPOINTS_BASE + "",
+	SIGN_IN: ENDPOINTS_BASE + "user/sign-in",
 	SIGN_UP: ENDPOINTS_BASE + "user/sign-up",
 	SIGN_UP_ACTIVATE: ENDPOINTS_BASE + "user/activate",
-	REFRESH_TOKEN: ENDPOINTS_BASE + "",
+	REFRESH_TOKEN: ENDPOINTS_BASE + "user/token-refresh",
 	RANKING: ENDPOINTS_BASE + "",
 	CURRENT_USER_PROFILE: ENDPOINTS_BASE + "",
 	userProfile: (id) => {return ENDPOINTS_BASE + ""}	
