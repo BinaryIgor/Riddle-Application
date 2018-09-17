@@ -1,50 +1,56 @@
-import {ROUTES} from "../constants/constants.js";
-import {Router} from "../router/router.js";
-import {executePostRequest} from "../service/http-service.js";
-import {validateSignInUser} from "../service/validator-service.js";
-import {isNotNullAndHaveDefinedFields} from "../service/validator-service.js";
-import {saveTokensData} from "../service/session-storage-service.js";
-import {getCurrentUrlParams} from "../service/parser-service.js";
-import {STRINGS} from "../constants/constants.js";
-import {ENDPOINTS} from "../constants/constants.js";
-import {URL_PARAMS_KEYS} from "../constants/constants.js";
-
-export class SignInController {
-	constructor(modalController) {
-		this.modalController = modalController;
-	}
-	init() {
+export function SignInPage(modal, strings) {
+	
+	const template = 
+		`<div class="flex-container-full-screen">
+		<h1>Sign Up</h1>
+		<form class="center-full-width">
+			<input type="email" placeholder="${strings.value("email")}"></input>
+			</br>
+			<input type="text" placeholder="${strings.value("name")}"></input>
+			</br>
+			<input type="password" placeholder="${strings.value("password")}"></input>
+			</br>
+			<button id="signUpButton">${strings.value("signUp")}</button>
+		</form>
+		${modal.template()}
+	</div>`; 
+	
+	const _modal = modal;
+	const _strings = strings; 
+	let signInInputs = {};
+	
+	this.load = (parent) => {
+		parent.innerHTML = template;
 		let form = document.querySelector("form");
-		form.addEventListener("submit", function(event) {
+			form.addEventListener("submit", function(event) {
 			event.preventDefault();
 		});
 		let inputs = form.getElementsByTagName("input");
-		this.signInInputs = {nameOrEmail: inputs[0], password: inputs[1]};
-		document.getElementById("signInButton").onclick = () => onSignInButtonClickListener.call(this);
-		this.modalController.init();
-		let urlParams = getCurrentUrlParams();
+		signInInputs = {nameOrEmail: inputs[0], password: inputs[1]};
+		document.getElementById("signInButton").onclick = () => onSignInButtonClicked();
+		_modal.init();
+		let urlParams = currentUrlParams();
 		if (isNotNullAndHaveDefinedFields(urlParams)) {
 			activateUser.call(this, urlParams);
 		}
-	}
-};
+	};
 
-function onSignInButtonClickListener() {
-	let user = {nameOrEmail: this.signInInputs.nameOrEmail.value, password: this.signInInputs.password.value};
-	console.log(JSON.stringify(user));
-	if (validateSignInUser(user)) {
-		signIn.call(this, user);
-	} else {
-		this.modalController.setTitle(STRINGS.INVALID_SIGN_IN_USER);
-		this.modalController.showModal();
-	}
-};
+	function signInButtonClicked() {
+		let user = {nameOrEmail: this.signInInputs.nameOrEmail.value, password: this.signInInputs.password.value};
+		console.log(JSON.stringify(user));
+		if (validateSignInUser(user)) {
+			signIn.call(this, user);
+		} else {
+			this.modalController.setTitle(STRINGS.INVALID_SIGN_IN_USER);
+			this.modalController.showModal();
+		}
+	};
 
-function signIn(user) {
-	executePostRequest(ENDPOINTS.SIGN_IN, user)
+	function signIn(user) {
+		executePostRequest(ENDPOINTS.SIGN_IN, user)
 		.then(tokensData => {
 			if (!tokensData) {
-				this.modalController.setTitle(STRINGS.SIGN_IN_FAILURE_TITLE);
+				_modal.setTitle(STRINGS.SIGN_IN_FAILURE_TITLE);
 				this.modalController.setText(STRINGS.SIGN_IN_FAILURE_USER_DOES_NOT_EXIST);
 				this.modalController.showModal();
 				return;
@@ -58,7 +64,7 @@ function signIn(user) {
 			this.modalController.setText(exception);
 			this.modalController.showModal();
 		});
-};
+	};
 
 function activateUser(urlParams) {
 	let id = urlParams[URL_PARAMS_KEYS.ID];

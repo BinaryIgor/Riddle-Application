@@ -1,73 +1,38 @@
-export const Router = (function() {
-	let instance;
-
-	function createInstance(routes, rootElement) {
-		if (instance) {
-			throw "Instance already exists";
-		}
-		instance = new RouterClass(routes, rootElement);
-	}
+export function Router(defaultRoute, routes, rootElement) {
 	
-	function getInstance() {
-		if (!instance) {
-			throw "Instance does not exist";
-		}
-		return instance;
-	}
+	let _defaultRote = defaultRoute;
+	let _routes = routes;
+	let _rootElement = rootElement;
 	
-	return {
-		createInstance: (routes, rootElement) => createInstance(routes, rootElement),
-		getInstance: () => {return getInstance();}
-	};
-})();
-
-
-class RouterClass {
-	constructor(routes, rootElement) {
-		this.routes = routes;
-		this.rootElement = rootElement;
-	}
-	
-	init() {
+	this.start = () =>  {
 		let scope = this;
 		window.addEventListener('hashchange', function(event) {
-			scope.onHashChanged(scope, scope.routes);
+			onHashChanged.call(scope);
 		});
-		this.onHashChanged();
+		onHashChanged();
 	}
 	
-	onHashChanged() {
-		for (let i = 0; i < this.routes.length; i++) {
-			let route = this.routes[i];
-			let goToRoute = (location.hash.length > 0 && route.isActiveRoute(location.hash.substr(1))) || 
-				(window.location.hash.length < 1 && route.defaultRoute);
+	function onHashChanged() {
+		let goToRoute = false;
+		for (let i = 0; i < _routes.length; i++) {
+			let route = _routes[i];
+			goToRoute = location.hash.length > 0 && route.name == location.hash.substr(1);
 			if (goToRoute) {
-				this.rootElement.innerHTML = route.htmlTemplate;
-				route.controller.init();
+				route.init(_rootElement);
 				break;
 			}
 		}
+		if (!goToRoute) {
+			_defaultRote.init(_rootElement);
+		}
 	}
 	
-	pushRoute(routeName) {
+	this.push = (routeName) => {
 		location.href = "#" + routeName;
 	}
 	
-	replaceRoute(routeName) {
+	this.replace = (routeName) => {
 		history.replaceState(null, null, "index.html#" + routeName);
-		this.onHashChanged();
+		onHashChanged();
 	}
 };
-
-export class Route {
-	constructor(name, htmlTemplate, controller, defaultRoute) {
-		this.name = name;
-		this.htmlTemplate = htmlTemplate;
-		this.controller = controller;
-		this.defaultRoute = defaultRoute;
-	}
-	
-	isActiveRoute(hashedPath) {
-		return hashedPath == this.name;
-	}
-}

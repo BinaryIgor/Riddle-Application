@@ -25,7 +25,7 @@ var tokensData;
 function executeRequest(url, method, data, addToken) {
 	return new Promise((resolve, reject) => {
 		let httpRequest = new XMLHttpRequest();
-		if (addToken && tokensData) {
+		if (Object.keys(tokensData).length > 0) {
 			httpRequest.setRequestHeader(HTTP_HEADERS_KEYS.AUTHORIZATION, HTTP_HEADERS_VALUES.BEARER + tokensData.accessToken);
 		}
 		httpRequest.onload = function() {
@@ -42,7 +42,7 @@ function executeRequest(url, method, data, addToken) {
 			reject(this.responseText);
 		};
 		httpRequest.open(method, url, true);
-		if (data) {
+		if (Object.keys(data).length > 0) {
 			httpRequest.send(JSON.stringify(data));
 		} else {
 			httpRequest.send();

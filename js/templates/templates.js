@@ -32,30 +32,7 @@ let signIn =
 		<a href="#sign-up">${STRINGS.NEW_SIGN_UP}</a>
 		${modal}
 	</div>`;
-	
-let signUp = 
-	`<div class="flex-container-full-screen">
-		<h1>Sign Up</h1>
-		<form class="center-full-width">
-			<input type="email" placeholder="${STRINGS.EMAIL}"></input>
-			</br>
-			<input type="text" placeholder="${STRINGS.NAME}"></input>
-			</br>
-			<input type="password" placeholder="${STRINGS.PASSWORD}"></input>
-			</br>
-			<button id="signUpButton">${STRINGS.SIGN_UP}</button>
-		</form>
-		${modal}
-	</div>`;
-		
-let mainPage = 
-	`<div class="flex-container-full-screen">
-		<div class="tile">${STRINGS.RANKING}</div>
-		<div class="tile">${STRINGS.GAMES}</div>
-		<div class="tile">${STRINGS.PROFILE}</div>
-		<div class="tile">${STRINGS.SIGN_OUT}</div>
-	</div>`;
-		
+			
 		
 let profile =
 	`<div class="flex-container-full-screen">
