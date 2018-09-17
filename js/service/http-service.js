@@ -30,12 +30,15 @@ function executeRequest(url, method, data, addToken) {
 		}
 		httpRequest.onload = function() {
 			if (this.status >= HTTP_STATUS_OK_MIN && this.status <= HTTP_STATUS_OK_MAX) {
+				console.log("response " + this.response);
 				resolve(this.responseText ? JSON.parse(this.responseText) : this.responseText);
 			} else {
+				console.log("response " + this.response);
 				reject(this.responseText);
 			}
 		};
 		httpRequest.onerror = function() {
+			console.log("response " + this.responseText);
 			reject(this.responseText);
 		};
 		httpRequest.open(method, url, true);

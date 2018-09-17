@@ -19,7 +19,7 @@ export class SignInController {
 			event.preventDefault();
 		});
 		let inputs = form.getElementsByTagName("input");
-		this.signInInputs = {nameEmail: inputs[0], password: inputs[1]};
+		this.signInInputs = {nameOrEmail: inputs[0], password: inputs[1]};
 		document.getElementById("signInButton").onclick = () => onSignInButtonClickListener.call(this);
 		this.modalController.init();
 		let urlParams = getCurrentUrlParams();
@@ -30,7 +30,8 @@ export class SignInController {
 };
 
 function onSignInButtonClickListener() {
-	let user = {nameEmail: this.signInInputs.nameEmail.value, password: this.signInInputs.password.value};
+	let user = {nameOrEmail: this.signInInputs.nameOrEmail.value, password: this.signInInputs.password.value};
+	console.log(JSON.stringify(user));
 	if (validateSignInUser(user)) {
 		signIn.call(this, user);
 	} else {
@@ -42,12 +43,19 @@ function onSignInButtonClickListener() {
 function signIn(user) {
 	executePostRequest(ENDPOINTS.SIGN_IN, user)
 		.then(tokensData => {
+			if (!tokensData) {
+				this.modalController.setTitle(STRINGS.SIGN_IN_FAILURE_TITLE);
+				this.modalController.setText(STRINGS.SIGN_IN_FAILURE_USER_DOES_NOT_EXIST);
+				this.modalController.showModal();
+				return;
+			}
 			console.log(tokensData);
 			saveTokensData(tokensData);
 			Router.getInstance().replaceRoute(ROUTES.MAIN_PAGE);
 		})
 		.catch(exception => {
 			this.modalController.setTitle(STRINGS.SIGN_IN_FAILURE_TITLE);
+			this.modalController.setText(exception);
 			this.modalController.showModal();
 		});
 };
@@ -67,14 +75,14 @@ function activateUser(urlParams) {
 
 function onActivateUserSuccess(response) {
 	if(response) {
-		let username = JSON.parse(response).name;
+		let username = response.name;
 		if (!username) {
 			onActivationUserFailure(response);
 		}
 		this.modalController.setTitle(STRINGS.SIGN_UP_ACTIVATION_SUCCESS_TITLE(username));
 		this.modalController.setText(STRINGS.SIGN_UP_ACTIVATION_SUCCESS_TEXT);
 		this.modalController.showModal();
-		//temporary hack!
+		//temporary hack!	
 		history.replaceState(null, null, "index.html");
 	} else {
 		onActivationUserFailure.call(this, response);

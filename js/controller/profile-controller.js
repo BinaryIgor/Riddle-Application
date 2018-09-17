@@ -3,12 +3,6 @@ import {ENDPOINTS} from "../constants/constants.js";
 import {executeGetRequest} from "../service/http-service.js";
 import {signUpUserValidator} from "../service/validator-service.js";
 
-const mockedProfile = {
-	email: "ceigor94@gmail.com",
-	name: "Ceigor",
-	password: "123456"
-};
-
 export class ProfileController {
 	constructor(inputModalController) {
 		this.inputModalController = inputModalController;
@@ -16,19 +10,21 @@ export class ProfileController {
 	
 	init() {
 		this.inputModalController.init();
-		let profileImage = document.querySelector("img");
-		profileImage.src = "images/background.jpg";
+		this.profileImage = document.querySelector("img");
+		this.profileImage.src = "images/background.jpg";
 		let inputs = document.querySelectorAll("input");
+		this.inputs = {image: inputs[0], email: inputs[1], name: inputs[2], password: inputs[3]};
 		let buttons = document.querySelectorAll("button");
-		inputs[0].onchange = function() {
+		this.buttons ={save: buttons[0], editEmail: buttons[1], editName: buttons[2], editPassword: buttons[3]};
+		this.inputs.image.onchange = function() {
 			profileImage.src = URL.createObjectURL(this.files[0]);
-			buttons[0].style.display = "inline";
+			this.buttons.save.style.display = "inline";
 		};
 		executeGetRequest(ENDPOINTS.CURRENT_USER_PROFILE).then(response => {
-			inputs[1].value = mockedProfile.email;
-			inputs[2].value = mockedProfile.name;
-			inputs[3].value = mockedProfile.password;
+			this.inputs.email.value = response.email;
+			this.inputs.name.value = response.name;
+			this.inputs.password.value = response.password;
 		}).catch((exception) => console.log(exception));
-		buttons[1].onclick = () => this.inputModalController.showModal();
+		this.buttons.editEmail.onclick = () => this.inputModalController.showModal();
 	}
 };

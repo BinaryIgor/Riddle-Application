@@ -17,7 +17,8 @@ export const STRINGS = {
 	SIGN_UP_ACTIVATION_FAILURE_TITLE: "Your account has not been activated",
 	NAME_EMAIL: "name/email",
 	SIGN_IN: "Sign In",
-	SIGN_IN_FAILURE_TITLE: "Wrong name/email or password",
+	SIGN_IN_FAILURE_TITLE: "Fail to sign in",
+	SIGN_IN_FAILURE_USER_DOES_NOT_EXIST: "Given user does not exist",
 	SIGN_UP: "Sign Up",
 	SIGN_OUT: "Sign Out",
 	NEW_SIGN_UP: "New? Sign up.",
@@ -51,8 +52,8 @@ export const ENDPOINTS = {
 	SIGN_UP_ACTIVATE: ENDPOINTS_BASE + "user/activate",
 	REFRESH_TOKEN: ENDPOINTS_BASE + "user/token-refresh",
 	RANKING: ENDPOINTS_BASE + "",
-	CURRENT_USER_PROFILE: ENDPOINTS_BASE + "",
-	userProfile: (id) => {return ENDPOINTS_BASE + ""}	
+	CURRENT_USER_PROFILE: ENDPOINTS_BASE + "user/profile",
+	userProfile: (id) => {return ENDPOINTS_BASE + "user/profile/" + id;}	
 };
 
 export const URL_PARAMS_KEYS = {

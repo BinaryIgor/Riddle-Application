@@ -18,7 +18,7 @@ function validatePassword(password) {
 }
 
 export function validateSignInUser(user) {
-	return (validateEmail(user.nameEmail) || validateUsername(user.nameEmail)) && validatePassword(user.password);
+	return (validateEmail(user.nameOrEmail) || validateUsername(user.nameOrEmail)) && validatePassword(user.password);
 }
 
 export const signUpUserValidator = {
