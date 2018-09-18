@@ -9,12 +9,12 @@ export function Modal {
 		</div>
 	</div>`;
 	
-	let modal = {}, modalTextParagraph = {}, modalTextParagraph ={};
+	let modal = {}, modalTitle = {}, modalText ={};
 	
-	this.init = () => {
+	this.bind = () => {
 		modal = document.getElementsByClassName("modal")[0];
-		modalTitleHeader = document.getElementById("modalTitleHeader");
-		modalTextParagraph = document.getElementById("modalTextParagraph");
+		modalTitle = document.getElementById("modalTitleHeader");
+		modalText = document.getElementById("modalTextParagraph");
 		document.getElementsByClassName("close")[0].onclick = () => modal.style.display = "none";
 		window.onclick = (event) => {
 			if (event.target == modal) {
@@ -23,15 +23,9 @@ export function Modal {
 		};
 	};
 	
-	this.writeTitle = (title) => {
-		modalTitleHeader.innerHTML = title;
-	};
-	
-	this.writeText = (text) => {
-		modalTextParagraph.innerHTML = text;
-	};
-	
-	this.showModal = () => {
+	this.show = (title, text) => {
+		modalTitle.innerHTML = title;
+		modalText.innerHTML = text;
 		modal.style.display = "flex";
 	};
 	

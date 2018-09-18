@@ -1,4 +1,4 @@
-function HttpConnection() {
+export function HttpConnection() {
 	const methods = {
 		get: "GET",
 		put: "PUT",
@@ -20,11 +20,11 @@ function HttpConnection() {
 	const goodStatusMinValue = 200;
 	const goodStatusMaxValue = 299;
 
-	function execute(url, method, data, tokensData) {
+	function execute(url, method, data, token) {
 		return new Promise((resolve, reject) => {
 			let httpRequest = new XMLHttpRequest();
-			if (Object.keys(tokensData).length > 0) {
-				httpRequest.setRequestHeader(headersKeys.authorization, headersValues.tokenPrefix + tokensData.accessToken);
+			if (token && token.length > 0) {
+				httpRequest.setRequestHeader(headersKeys.authorization, headersValues.tokenPrefix + token);
 			}
 			httpRequest.onload = function() {
 				if (this.status >= goodStatusMinValue && this.status <= goodStatusMaxValue) {
@@ -40,8 +40,8 @@ function HttpConnection() {
 				reject(this.responseText);
 			};
 			httpRequest.open(method, url, true);
-			if (Object.keys(data).length > 0) {
-				httpRequest.send(JSON.stringify(data));
+			if (data && data.length > 0) {
+				httpRequest.send(data);
 			} else {
 				httpRequest.send();
 			}
@@ -49,8 +49,8 @@ function HttpConnection() {
 	};
 	
 	
-	this.executeGet = (url, tokensData = {}) => execute(url, methods.get, {}, tokensData);
-	this.executePost = (url, data, tokensData = {}) => execute(url, methods.post, data, tokensData);
-	this.executePut = (url, data, tokensData = {}) => execute(url, methods.put, data, tokensData);	
-	this.executeDelete = (url, tokensData = {}) => execute(url, methods.get, {}, tokensData);
+	this.executeGet = (url, token = "") => execute(url, methods.get, "", token);
+	this.executePost = (url, data, token = "") => execute(url, methods.post, data, token);
+	this.executePut = (url, data, token = "") => execute(url, methods.put, data, token);	
+	this.executeDelete = (url, token = "") => execute(url, methods.get, "", token);
 };

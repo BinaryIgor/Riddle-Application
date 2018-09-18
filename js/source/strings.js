@@ -1,14 +1,7 @@
 export function strings() {
-	
-	const _minEmailLength = 7;
-	const _minUsernameLength = 3;
-	const _minPasswordLength = 6;
-	
+
 	const strings = new Map();
 	strings.set("invalidSignInUser", "Invalid name/email or password.");
-	strings.set("invalidEmail", `Email has to have at least {$_minEmailLength} characters and contains both '@' and '.' characters.`);
-	strings.set("invalidUsername", `Username has to have at least ${_minUsernameLength} characters.`);
-	strings.set("invalidPassword", `Password has to have at least  ${_minPasswordLength} characters.`);
 	strings.set("signUpSuccessTitle", "You have successfully signed up!");
 	strings.set("signUpFailureTitle", "You failed to sign up.");
 	strings.set("signUpSuccessText", "Check your email for activating link.");
@@ -31,6 +24,11 @@ export function strings() {
 	strings.set("edit", "Edit");
 	strings.set("save", "Save");
 	
+	const stringsWithParams = new Map();
+	stringsWithParams.set("invalidUsername", (requiredLength) => `Email has to have at least {$requiredLength} characters and contains both '@' and '.' characters.`);
+	stringsWithParams.set("invalidEmail", (requiredLength) => `Username has to have at least ${requiredLength} characters.`);
+	stringsWithParams.set("invalidPassword", (requiredLength) => `Password has to have at least  ${requiredLength} characters.`);
+	
 	this.value = (key) {
 		let value = strings.get(key);
 		if (!value) {
@@ -38,6 +36,13 @@ export function strings() {
 		}
 		return value;
 	};
-
+	
+	this.valueWithParam(key, param) {
+		let value = stringsWithParams.get(key)
+		if (!value) {
+			throw `string associated with ${key} does not exist`;
+		}
+		return value(param);
+	};
 }
 
