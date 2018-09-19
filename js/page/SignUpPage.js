@@ -1,4 +1,4 @@
-export function SignUpPage(parentDom, router, modal, strings, signingUp) {
+export function SignUpPage(router, parentDom, modal, strings, signingUp) {
 	
 	const template = 
 		`<div class="flex-container-full-screen">
@@ -14,15 +14,17 @@ export function SignUpPage(parentDom, router, modal, strings, signingUp) {
 		</form>
 		${modal.template()}
 	</div>`; 
+	const name = "sign-up";
 	
-	const _parentDom = parentDom;
 	const _router = router;
+	const _parentDom = parentDom;
 	const _modal = modal;
 	const _strings = strings;
 	const _signingUp = signingUp;
 	let _inputs;
 	
-	this.render() = () => {
+	this.enter = () => {
+		_parentDom.innerHTML = template;
 		this.form = document.querySelector("form");
 		this.form.addEventListener("submit", function(event) {event.preventDefault();});
 		let inputs = this.form.getElementsByTagName("input");
@@ -38,5 +40,8 @@ export function SignUpPage(parentDom, router, modal, strings, signingUp) {
 				_modal.show(strings.value("signUpSuccessTitle"), strings.value("signUpSuccessText"));
 			}).catch(exception => _modal.show(strings.value("signUpFailureTitle", exception)));
 	};
+	
+	this.name = () => name;
+	
 };
 

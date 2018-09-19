@@ -21,7 +21,7 @@ export function UserActivation(currentUrl, httpConnectionWithEndpoints) {
 		return true;
 	};
 	
-	this.activate = () {
+	this.activate = () => {
 		if (Object.keys(_activationData).length < 1) {
 			throw "can() method has to be called first and return a positive result";
 		}

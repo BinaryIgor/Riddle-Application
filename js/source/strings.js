@@ -1,4 +1,4 @@
-export function strings() {
+export function Strings() {
 
 	const strings = new Map();
 	strings.set("invalidSignInUser", "Invalid name/email or password.");
@@ -29,7 +29,7 @@ export function strings() {
 	stringsWithParams.set("invalidEmail", (requiredLength) => `Username has to have at least ${requiredLength} characters.`);
 	stringsWithParams.set("invalidPassword", (requiredLength) => `Password has to have at least  ${requiredLength} characters.`);
 	
-	this.value = (key) {
+	this.value = (key) => {
 		let value = strings.get(key);
 		if (!value) {
 			throw `string associated with ${key} does not exist`;
@@ -37,7 +37,7 @@ export function strings() {
 		return value;
 	};
 	
-	this.valueWithParam(key, param) {
+	this.valueWithParam = (key, param) => {
 		let value = stringsWithParams.get(key)
 		if (!value) {
 			throw `string associated with ${key} does not exist`;

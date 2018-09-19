@@ -3,7 +3,7 @@ export function SigningIn(httpConnectionWithEndpoints, strings) {
 	const _httpConnectionWithEndpoints = httpConnectionWithEndpoints;
 	const _strings = strings;
 	
-	this.signIn = (nameOrEmail, password) => {
+	this.perform = (nameOrEmail, password) => {
 		let invalidUser = (!nameOrEmail || nameOrEmail.length < 4) || 
 			(!password || password.length < 6);
 		if (invalidUser) {

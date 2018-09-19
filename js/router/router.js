@@ -1,7 +1,15 @@
-export function Router(defaultRoute, routes) {
+export function Router() {
 	
-	const _defaultRote = defaultRoute;
-	const _routes = routes;
+	let _defaultRoute = {};
+	const _routes = [];
+	
+	this.addDefault = (defaultRoute) => {
+		_defaultRoute = defaultRoute;
+	};
+	
+	this.add = (route) => {
+		_routes.push(route);
+	};
 	
 	this.start = () =>  {
 		let scope = this;
@@ -9,29 +17,30 @@ export function Router(defaultRoute, routes) {
 			onHashChanged.call(scope);
 		});
 		onHashChanged();
-	}
+	};
 	
 	function onHashChanged() {
 		let goToRoute = false;
 		for (let i = 0; i < _routes.length; i++) {
 			let route = _routes[i];
-			goToRoute = location.hash.length > 0 && route.name == location.hash.substr(1);
+			console.log(route.name());
+			goToRoute = location.hash.length > 0 && route.name() == location.hash.substr(1);
 			if (goToRoute) {
-				route.render();
+				route.enter();
 				break;
 			}
 		}
 		if (!goToRoute) {
-			_defaultRoute.render();
+			_defaultRoute.enter();
 		}
-	}
+	};
 	
 	this.push = (routeName) => {
 		location.href = "#" + routeName;
-	}
+	};
 	
 	this.replace = (routeName) => {
 		history.replaceState(null, null, "index.html#" + routeName);
 		onHashChanged();
-	}
+	};
 };

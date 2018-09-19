@@ -1,4 +1,4 @@
-export function Tokens {
+export function Tokens() {
 	
 	const accessTokenKey = "accessToken";
 	const refreshTokenKey = "refreshToken";
@@ -10,7 +10,7 @@ export function Tokens {
 		sessionStorage.setItem(expirationDateKey, tokensData.accessToken.expirationDate);
 	};
 	
-	this.saveAccessToken = (accessToken) {
+	this.saveAccessToken = (accessToken) => {
 		sessionStorage.setItem(accessTokenKey, accessToken.value);
 		sessionStorage.setItem(expirationDateKey, accessToken.expirationDate);
 	};

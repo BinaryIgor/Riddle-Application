@@ -17,7 +17,7 @@ export function Endpoints(base) {
 		return value;
 	};
 	
-	this.valueWith = (key, param) {
+	this.valueWith = (key, param) => {
 		let value = this.value(key);
 		return `${value}/${param}`;
 	};

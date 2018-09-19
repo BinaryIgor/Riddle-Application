@@ -1,4 +1,4 @@
-export function SignInPage(parentDom, router, nextPage, modal, strings, signingIn, userActivation) {
+export function SignInPage(router, parentDom, nextPage, modal, strings, signingIn, userActivation) {
 
 	const template = 
 		`<div class="flex-container-full-screen">
@@ -10,20 +10,21 @@ export function SignInPage(parentDom, router, nextPage, modal, strings, signingI
 			</br>
 			<button id="signInButton">${strings.value("signIn")}</button>
 		</form>
-		<a href="#sign-up">${strings.value("newSignUp")}</a>
+		<a href="#${nextPage}">${strings.value("newSignUp")}</a>
 		${modal.template()}
 	</div>`; 
+	const name = "sign_in";
 	
-	const _parentDom = parentDom;
 	const _router = router;
+	const _parentDom = parentDom;
 	const _nextPage = nextPage;
 	const _modal = modal;
 	const _strings = strings;
-	const _signingUp = signingUp;
+	const _signingIn = signingIn;
 	const _userActivation = userActivation;
 	let _signInInputs = {};
 	
-	this.render = () => {
+	this.enter = () => {
 		_parentDom.innerHTML = template;
 		let form = document.querySelector("form");
 			form.addEventListener("submit", function(event) {
@@ -31,7 +32,7 @@ export function SignInPage(parentDom, router, nextPage, modal, strings, signingI
 		});
 		let inputs = form.getElementsByTagName("input");
 		_signInInputs = {nameOrEmail: inputs[0], password: inputs[1]};
-		document.getElementById("signInButton").onclick = () => onSignInButtonClicked();
+		document.getElementById("signInButton").onclick = () => signInButtonClicked();
 		_modal.bind();
 		if (_userActivation.can()) {
 			_userActivation.activate().then(response => userActivated(response))
@@ -40,15 +41,14 @@ export function SignInPage(parentDom, router, nextPage, modal, strings, signingI
 	};
 
 	function signInButtonClicked() {
-		user.signIn({_signInInputs.nameOrEmail.value, _signInInputs.password.value}).then(tokensData => {
+		_signingIn.perform(_signInInputs.nameOrEmail.value, _signInInputs.password.value).then(tokensData => {
 			if (!tokensData) {
 				_modal.show(strings.value("signInFailureTitle"), strings.value("signInFilureUserDoesNotExist"));
 				return;
 			}
 			tokens.save(tokensData);
 			router.replace(nextPage);
-		})
-		.catch(exception => _modal.show(strings.value("signInFailureTitle", exception));
+		}).catch(exception => _modal.show(strings.value("signInFailureTitle"), exception));
 	};
 
 
@@ -60,6 +60,8 @@ export function SignInPage(parentDom, router, nextPage, modal, strings, signingI
 		}
 		_modal.show(strings.value("signUpActivationSuccessTitile"), strings.value("signUpActivationSuccessText"));
 		//temporary hack!	
-		history.replaceState(null, null, "index.html");
+		history.replaceState(null, null, "index");
 	};
+	
+	this.name = () => name;
 };
