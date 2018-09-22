@@ -1,4 +1,4 @@
-export function SignUpPage(router, parentDom, modal, strings, signingUp) {
+export function SignUpPage(router, modal, strings, signingUp) {
 	
 	const template = 
 		`<div class="flex-container-full-screen">
@@ -17,17 +17,16 @@ export function SignUpPage(router, parentDom, modal, strings, signingUp) {
 	const name = "sign-up";
 	
 	const _router = router;
-	const _parentDom = parentDom;
 	const _modal = modal;
 	const _strings = strings;
 	const _signingUp = signingUp;
 	let _inputs;
 	
 	this.enter = () => {
-		_parentDom.innerHTML = template;
-		this.form = document.querySelector("form");
-		this.form.addEventListener("submit", function(event) {event.preventDefault();});
-		let inputs = this.form.getElementsByTagName("input");
+		document.body.innerHTML = template;
+		let form = document.querySelector("form");
+		form.addEventListener("submit", function(event) {event.preventDefault();});
+		let inputs = form.getElementsByTagName("input");
 		_inputs = {email: inputs[0], name: inputs[1], password: inputs[2]};
 		document.getElementById("signUpButton").onclick = () => signUpButtonClicked();
 		_modal.bind();
@@ -38,7 +37,7 @@ export function SignUpPage(router, parentDom, modal, strings, signingUp) {
 			.then(response => {
 				_inputs.email.value = _inputs.name.value = _inputs.password.value = "";
 				_modal.show(strings.value("signUpSuccessTitle"), strings.value("signUpSuccessText"));
-			}).catch(exception => _modal.show(strings.value("signUpFailureTitle", exception)));
+			}).catch(exception => _modal.show(strings.value("signUpFailureTitle"), exception.message));
 	};
 	
 	this.name = () => name;

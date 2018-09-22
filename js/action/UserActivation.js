@@ -22,9 +22,12 @@ export function UserActivation(currentUrl, httpConnectionWithEndpoints) {
 	};
 	
 	this.activate = () => {
-		if (Object.keys(_activationData).length < 1) {
-			throw "can() method has to be called first and return a positive result";
-		}
-		return httpConnectionWithEndpoints.executePost("signUpActivate", _activationData);
+		return new Promise((resolve, reject) => {
+			if (Object.keys(_activationData).length < 1) {
+				reject(new Error("can() method has to be called first and return a positive result"));
+			} else {
+				resolve(httpConnectionWithEndpoints.executePost("signUpActivate", JSON.stringify(_activationData)));
+			}
+		});
 	};
 }

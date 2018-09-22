@@ -1,5 +1,6 @@
-export function Router() {
+export function Router(pageName = "index.html") {
 	
+	const _pageName = pageName;
 	let _defaultRoute = {};
 	const _routes = [];
 	
@@ -14,16 +15,15 @@ export function Router() {
 	this.start = () =>  {
 		let scope = this;
 		window.addEventListener('hashchange', function(event) {
-			onHashChanged.call(scope);
+			hashChanged.call(scope);
 		});
-		onHashChanged();
+		hashChanged();
 	};
 	
-	function onHashChanged() {
+	function hashChanged() {
 		let goToRoute = false;
 		for (let i = 0; i < _routes.length; i++) {
 			let route = _routes[i];
-			console.log(route.name());
 			goToRoute = location.hash.length > 0 && route.name() == location.hash.substr(1);
 			if (goToRoute) {
 				route.enter();
@@ -35,12 +35,17 @@ export function Router() {
 		}
 	};
 	
-	this.push = (routeName) => {
-		location.href = "#" + routeName;
-	};
+	this.push = (routeName) => location.href = "#" + routeName;
+	
+	this.pushDefault = () => this.push(_defaultRoute.name());
 	
 	this.replace = (routeName) => {
-		history.replaceState(null, null, "index.html#" + routeName);
-		onHashChanged();
+		let previousHash = location.hash.substr(1);
+		history.replaceState(null, null, pageName + "#" + routeName);
+		if (previousHash != routeName) {
+			hashChanged();
+		}
 	};
+	
+	this.replaceWithDefault = () => this.replace(_defaultRoute.name());
 };

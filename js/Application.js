@@ -19,7 +19,7 @@ import {ProfilePage} from "./page/ProfilePage.js";
 const endpoints = new Endpoints("http://localhost:8000/riddle/");
 const strings = new Strings();
 const httpConnection = new HttpConnection();
-const httpConnectionWithEndpoints = new HttpConnectionWithEndpoints(endpoints, httpConnection);
+const httpConnectionWithEndpoints = new HttpConnectionWithEndpoints(httpConnection, endpoints);
 
 const signingIn = new SigningIn(httpConnectionWithEndpoints, strings);
 const signingUp = new SigningUp(httpConnectionWithEndpoints, strings);
@@ -32,13 +32,17 @@ const modal = new Modal();
 const inputModal = new InputModal(strings);
 
 const router = new Router();
-const signUpPage = new SignUpPage(router, document.body, modal, strings, signingUp);
+
+const profilePage = new ProfilePage(router, strings, inputModal);
+router.add(profilePage);
+
+const mainPage = new MainPage(router, profilePage.name(), strings, tokens);
+router.add(mainPage);
+
+const signUpPage = new SignUpPage(router, modal, strings, signingUp);
 router.add(signUpPage);
 
-const signInPage = new SignInPage(router, document.body, signUpPage.name(), modal, strings, signingIn, userActivation);
+const signInPage = new SignInPage(router, signUpPage.name(), mainPage.name(), modal, strings, signingIn, userActivation, tokens);
 router.addDefault(signInPage);
 
-const profilePage = new ProfilePage(router, document.body, strings, inputModal);
-router.add(profilePage);
-router.add(new MainPage(router, document.body, signInPage.name(), strings, tokens));
 router.start();

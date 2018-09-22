@@ -18,7 +18,7 @@ export function Tokens() {
 	this.delete = () => {
 		sessionStorage.removeItem(accessTokenKey);
 		sessionStorage.removeItem(refreshTokenKey);
-		sessionStorage.removeItem(expirationDate);
+		sessionStorage.removeItem(expirationDateKey);
 	};
 	
 	this.readTokens = () => {

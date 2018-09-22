@@ -4,11 +4,14 @@ export function SigningIn(httpConnectionWithEndpoints, strings) {
 	const _strings = strings;
 	
 	this.perform = (nameOrEmail, password) => {
-		let invalidUser = (!nameOrEmail || nameOrEmail.length < 4) || 
-			(!password || password.length < 6);
-		if (invalidUser) {
-			throw strings.value("invalidSignInUser");
-		}
-		return httpConnectionWithEndpoints.executePost("signIn", JSON.stringify({nameOrEmail: nameOrEmail, password: password}));
+		return new Promise((resolve, reject) => {
+			if(nameOrEmail.length < 4) {
+				reject(new Error(strings.valueWithParam("invalidSignInUser", 4)));
+			} else if (password.length < 6) {
+				reject(new Error(strings.valueWithParam("invalidPassword", 6)));
+			} else {
+				resolve(httpConnectionWithEndpoints.executePost("signIn", JSON.stringify({nameOrEmail: nameOrEmail, password: password})));
+			}
+		});
 	};
 };

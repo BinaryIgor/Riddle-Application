@@ -1,4 +1,4 @@
-export function SignInPage(router, parentDom, nextPage, modal, strings, signingIn, userActivation) {
+export function SignInPage(router, signInPage, nextPage, modal, strings, signingIn, userActivation, tokens) {
 
 	const template = 
 		`<div class="flex-container-full-screen">
@@ -10,22 +10,22 @@ export function SignInPage(router, parentDom, nextPage, modal, strings, signingI
 			</br>
 			<button id="signInButton">${strings.value("signIn")}</button>
 		</form>
-		<a href="#${nextPage}">${strings.value("newSignUp")}</a>
+		<a href="#${signInPage}">${strings.value("newSignUp")}</a>
 		${modal.template()}
 	</div>`; 
-	const name = "sign_in";
+	const name = "sign-in";
 	
 	const _router = router;
-	const _parentDom = parentDom;
 	const _nextPage = nextPage;
 	const _modal = modal;
 	const _strings = strings;
 	const _signingIn = signingIn;
 	const _userActivation = userActivation;
+	const _tokens = tokens;
 	let _signInInputs = {};
 	
 	this.enter = () => {
-		_parentDom.innerHTML = template;
+		document.body.innerHTML = template;
 		let form = document.querySelector("form");
 			form.addEventListener("submit", function(event) {
 			event.preventDefault();
@@ -41,26 +41,26 @@ export function SignInPage(router, parentDom, nextPage, modal, strings, signingI
 	};
 
 	function signInButtonClicked() {
-		_signingIn.perform(_signInInputs.nameOrEmail.value, _signInInputs.password.value).then(tokensData => {
-			if (!tokensData) {
-				_modal.show(strings.value("signInFailureTitle"), strings.value("signInFilureUserDoesNotExist"));
+		_signingIn.perform(_signInInputs.nameOrEmail.value, _signInInputs.password.value).then(response => {
+			if (!response) {
+				_modal.show(strings.value("signInFailureTitle"), strings.value("signInFailureUserDoesNotExist"));
 				return;
 			}
-			tokens.save(tokensData);
-			router.replace(nextPage);
-		}).catch(exception => _modal.show(strings.value("signInFailureTitle"), exception));
+			let tokensData = JSON.parse(response); 
+			_tokens.save(tokensData);
+			_router.replace(_nextPage);
+		}).catch(exception => _modal.show(strings.value("signInFailureTitle"), exception.message));
 	};
 
 
 	function userActivated(response) {
-		let username = response.name;
+		let username = JSON.parse(response).username;
 		if (!username) {
 			_modal.show(strings.value("signUpActivationFailureTitle"), response);
 			return;
 		}
-		_modal.show(strings.value("signUpActivationSuccessTitile"), strings.value("signUpActivationSuccessText"));
-		//temporary hack!	
-		history.replaceState(null, null, "index");
+		_modal.show(strings.valueWithParam("signUpActivationSuccessTitle", username), strings.value("signUpActivationSuccessText"));
+		_router.replace(name);
 	};
 	
 	this.name = () => name;

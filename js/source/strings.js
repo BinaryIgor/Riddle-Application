@@ -1,13 +1,12 @@
 export function Strings() {
 
 	const strings = new Map();
-	strings.set("invalidSignInUser", "Invalid name/email or password.");
 	strings.set("signUpSuccessTitle", "You have successfully signed up!");
 	strings.set("signUpFailureTitle", "You failed to sign up.");
 	strings.set("signUpSuccessText", "Check your email for activating link.");
 	strings.set("welcome", "Welcome"); 
 	strings.set("signUpActivationSuccessText", "Your account is ready to use");
-	strings.set("signUpActivationFauilureTitle", "Your account has not been activated");
+	strings.set("signUpActivationFailureTitle", "Your account has not been activated");
 	strings.set("nameEmail", "name/email");
 	strings.set("signIn", "Sign In");
 	strings.set("signInFailureTitle", "Fail to sign in");
@@ -25,9 +24,11 @@ export function Strings() {
 	strings.set("save", "Save");
 	
 	const stringsWithParams = new Map();
-	stringsWithParams.set("invalidUsername", (requiredLength) => `Email has to have at least {$requiredLength} characters and contains both '@' and '.' characters.`);
+	stringsWithParams.set("invalidUsername", (requiredLength) => `Email has to have at least ${requiredLength} characters and contains both '@' and '.' characters.`);
 	stringsWithParams.set("invalidEmail", (requiredLength) => `Username has to have at least ${requiredLength} characters.`);
 	stringsWithParams.set("invalidPassword", (requiredLength) => `Password has to have at least  ${requiredLength} characters.`);
+	stringsWithParams.set("invalidSignInUser", (requiredLength) => `Username/email has to have at least ${requiredLength} characters.`);
+	stringsWithParams.set("signUpActivationSuccessTitle", (username) => `Welcome ${username}!`);
 	
 	this.value = (key) => {
 		let value = strings.get(key);

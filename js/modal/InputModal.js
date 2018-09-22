@@ -1,12 +1,14 @@
 export function InputModal(strings) {
-	
+		
 	const template = 
 		`<div class="modal">
 			<div class="modal-content">
 				<span class="close">&times;</span>
 				<h2 id="modalTitleHeader"></h2>
-				<input id="modalInput" value="ddd"></input>
+				<input id="modalInput"></input>
+				</br>
 				<button id="saveButton">${strings.value("save")}</button>
+				</br>
 			</div>
 		</div>`;
 	const _strings = strings;
@@ -25,7 +27,7 @@ export function InputModal(strings) {
 	};
 	
 	this.show = (title, type, value = "") => {
-		_modal.innerHTML = title;
+		_title.innerHTML = title;
 		_input.type =  type;
 		_input.value = value;
 		_modal.style.display = "flex";

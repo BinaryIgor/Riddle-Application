@@ -17,6 +17,12 @@ export function HttpConnection() {
 		tokenPrefix: "Bearer "	
 	};
 	
+	const responseTypes = {
+		text: "text",
+		blob: "blob",
+		json: "json"
+	};
+	
 	const goodStatusMinValue = 200;
 	const goodStatusMaxValue = 299;
 
@@ -28,16 +34,13 @@ export function HttpConnection() {
 			}
 			httpRequest.onload = function() {
 				if (this.status >= goodStatusMinValue && this.status <= goodStatusMaxValue) {
-					console.log("response " + this.response);
-					resolve(this.responseText ? JSON.parse(this.responseText) : this.responseText);
+					resolve(this.response);
 				} else {
-					console.log("response " + this.response);
-					reject(this.responseText);
+					reject(new Error(this.response));
 				}
 			};
 			httpRequest.onerror = function() {
-				console.log("response " + this.responseText);
-				reject(this.responseText);
+				reject(new Error(this.response));
 			};
 			httpRequest.open(method, url, true);
 			if (data && data.length > 0) {
@@ -47,7 +50,6 @@ export function HttpConnection() {
 			}
 		});
 	};
-	
 	
 	this.executeGet = (url, token = "") => execute(url, methods.get, "", token);
 	this.executePost = (url, data, token = "") => execute(url, methods.post, data, token);
