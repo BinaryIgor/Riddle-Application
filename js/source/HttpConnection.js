@@ -1,4 +1,5 @@
 export function HttpConnection() {
+	
 	const methods = {
 		get: "GET",
 		put: "PUT",
@@ -27,11 +28,9 @@ export function HttpConnection() {
 	const goodStatusMaxValue = 299;
 
 	function execute(url, method, data, token) {
+		console.log(`httpConnection, token = ${token}`);
 		return new Promise((resolve, reject) => {
 			let httpRequest = new XMLHttpRequest();
-			if (token && token.length > 0) {
-				httpRequest.setRequestHeader(headersKeys.authorization, headersValues.tokenPrefix + token);
-			}
 			httpRequest.onload = function() {
 				if (this.status >= goodStatusMinValue && this.status <= goodStatusMaxValue) {
 					resolve(this.response);
@@ -43,6 +42,9 @@ export function HttpConnection() {
 				reject(new Error(this.response));
 			};
 			httpRequest.open(method, url, true);
+			if (token && token.length > 0) {
+				httpRequest.setRequestHeader(headersKeys.authorization, headersValues.tokenPrefix + token);
+			}
 			if (data && data.length > 0) {
 				httpRequest.send(data);
 			} else {

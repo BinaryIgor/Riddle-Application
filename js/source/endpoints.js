@@ -7,7 +7,7 @@ export function Endpoints(base) {
 	endpoints.set("signUpActivate",  _base + "user/activate");
 	endpoints.set("refreshToken", _base + "user/token-refresh");
 	endpoints.set("ranking", _base + "");
-	endpoints.set("currentUserProfile", _base + "user/profile");
+	endpoints.set("userProfile", _base + "user/profile");
 	
 	this.value = (key) => {
 		let value = endpoints.get(key);

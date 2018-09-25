@@ -1,42 +1,49 @@
-export function ProfilePage(router, strings, inputModal) { 
+export function ProfilePage(router, strings, modal, authenticatedHttpConnectionWithEndpoints) { 
 	
 	const template = 
-		`<div class="flex-container-full-screen">
+		`<div class="flex-container-full-screen-no-wrap">
 			<img class="profile-img"></img>
 			<input type="file"></input>
 			<button style="display: none">${strings.value("save")}</button>
 			<div class="tile" id="email"></div>
 				<form class="center-full-width" style="display: none">
-					<input type="email"></input>
+					<input type="email" placeholder="${strings.value("newEmail")}"></input>
 					</br>
 					<button>${strings.value("save")}</button>
+					</br>
 				</form>
 			<div class="tile" id="name"></div>
 				<form class="center-full-width" style="display: none">
-					<input type="text"></input>
+					<input type="text" placeholder="${strings.value("newName")}"></input>
 					</br>
 					<button>${strings.value("save")}</button>
+					</br>
 				</form>
-			<div class="tile" id="password"></div>
+			<div class="tile" id="password">?</div>
 				<form class="center-full-width" style="display: none">
-					<input type="password"></input>
+					<input type="password" placeholder="${strings.value("oldPassword")}"></input>
+					</br>
+					<input type="password" placeholder="${strings.value("newPassword")}"></input>
 					</br>
 					<button>${strings.value("save")}</button>
+					</br>
 			</form>
-			${inputModal.template()}
+			${modal.template()}
 		</div>`;
 
 	const name = "profile";
 	
 	const _router = router;
 	const _strings = strings;
-	const _inputModal = inputModal;
+	const _modal = modal;
+	const _authenticatedHttpConnectionWithEndpoints = authenticatedHttpConnectionWithEndpoints;
 	let _image = {}, _tiles = [], _forms = [], _inputs = [], _buttons = [];
 	let _profileImgRotation = 90;
+	let _profile = {};
 	
 	this.enter = () => {
 		document.body.innerHTML = template;
-		_inputModal.bind();
+		_modal.bind();
 		_image = document.getElementsByClassName("profile-img")[0];
 		let tiles = document.getElementsByClassName("tile");
 		_tiles = {email: tiles[0], name: tiles[1], password: tiles[2]};
@@ -56,15 +63,18 @@ export function ProfilePage(router, strings, inputModal) {
 		_tiles.password.onclick = () => hideOrShow(_forms.password);
 	};
 	
+	//TODO multipart response for getting image needed
 	function userProfile() {
-		let profile = {email: "Mocked@gmail.com", name: "Mock",  password: "dadafa3454e", image: "images/background.jpg"};
-		_image.src = profile.image;
-		_tiles.email.appendChild(document.createTextNode(profile.email));
-		_inputs.email.value = profile.email;
-		_tiles.name.appendChild(document.createTextNode(profile.name));
-		_inputs.name.value = profile.name;
-		_tiles.password.appendChild(document.createTextNode("passs"));
-		_inputs.password.value = profile.password;
+		_authenticatedHttpConnectionWithEndpoints.executeGet("userProfile").then(profile => {
+			if (!profile) {
+				_modal.show(strings.value("requestFailureTitle") , strings.value("noContent"));
+				return;
+			}
+			_profile = JSON.parse(profile);
+			_tiles.email.appendChild(document.createTextNode(_profile.email));
+			_tiles.name.appendChild(document.createTextNode(_profile.name));
+			_image.src = "images/background.jpg";
+		}).catch(exception => _modal.show(strings.value("requestFailureTitle"), exception.message));
 	};
 	
 	function hideOrShow(element) {

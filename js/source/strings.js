@@ -22,6 +22,12 @@ export function Strings() {
 	strings.set("profile", "Profile");
 	strings.set("edit", "Edit");
 	strings.set("save", "Save");
+	strings.set("newEmail", "New email");
+	strings.set("newName", "New name");
+	strings.set("oldPassword", "Old password");
+	strings.set("newPassword", "New password");
+	strings.set("requestFailureTitle", "Request Failure");
+	strings.set("noContent", "No content");
 	
 	const stringsWithParams = new Map();
 	stringsWithParams.set("invalidUsername", (requiredLength) => `Email has to have at least ${requiredLength} characters and contains both '@' and '.' characters.`);
