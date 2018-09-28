@@ -1,4 +1,4 @@
-export function UserActivation(currentUrl, httpConnectionWithEndpoints) {
+export function ToActivateUser(currentUrl, httpConnectionWithEndpoints) {
 	
 	const _currentUrl = currentUrl;
 	const _httpConnectionWithEndpoints = httpConnectionWithEndpoints;

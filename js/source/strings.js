@@ -24,14 +24,17 @@ export function Strings() {
 	strings.set("save", "Save");
 	strings.set("newEmail", "New email");
 	strings.set("newName", "New name");
-	strings.set("oldPassword", "Old password");
 	strings.set("newPassword", "New password");
 	strings.set("requestFailureTitle", "Request Failure");
 	strings.set("noContent", "No content");
+	strings.set("editProfileFailure", "Fail to change profile");
+	strings.set("editEmailSuccess", "Email has been changed");
+	strings.set("editNameSuccess", "Name has been changed");
+	strings.set("editPasswordSuccess", "Password has been changed");
 	
 	const stringsWithParams = new Map();
-	stringsWithParams.set("invalidUsername", (requiredLength) => `Email has to have at least ${requiredLength} characters and contains both '@' and '.' characters.`);
-	stringsWithParams.set("invalidEmail", (requiredLength) => `Username has to have at least ${requiredLength} characters.`);
+	stringsWithParams.set("invalidEmail", (requiredLength) => `Email has to have at least ${requiredLength} characters and contains both '@' and '.' characters.`);
+	stringsWithParams.set("invalidUsername", (requiredLength) => `Username has to have at least ${requiredLength} characters.`);
 	stringsWithParams.set("invalidPassword", (requiredLength) => `Password has to have at least  ${requiredLength} characters.`);
 	stringsWithParams.set("invalidSignInUser", (requiredLength) => `Username/email has to have at least ${requiredLength} characters.`);
 	stringsWithParams.set("signUpActivationSuccessTitle", (username) => `Welcome ${username}!`);

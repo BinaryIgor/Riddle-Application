@@ -1,4 +1,6 @@
-export function SignInPage(router, signInPage, nextPage, modal, strings, signingIn, userActivation, tokens) {
+import {ToSignInUser} from "../user/ToSignInUser.js";
+
+export function SignInPage(router, nextPage, signUpPage, modal, strings, httpConnectionWithEndpoints, toActivateUser, tokens) {
 
 	const template = 
 		`<div class="flex-container-full-screen">
@@ -10,7 +12,7 @@ export function SignInPage(router, signInPage, nextPage, modal, strings, signing
 			</br>
 			<button id="signInButton">${strings.value("signIn")}</button>
 		</form>
-		<a href="#${signInPage}">${strings.value("newSignUp")}</a>
+		<a href="#${signUpPage}">${strings.value("newSignUp")}</a>
 		${modal.template()}
 	</div>`; 
 	const name = "sign-in";
@@ -19,10 +21,10 @@ export function SignInPage(router, signInPage, nextPage, modal, strings, signing
 	const _nextPage = nextPage;
 	const _modal = modal;
 	const _strings = strings;
-	const _signingIn = signingIn;
-	const _userActivation = userActivation;
+	const _httpConnectionWithEndpoints = httpConnectionWithEndpoints;
+	const _toActivateUser = toActivateUser;
 	const _tokens = tokens;
-	let _signInInputs = {};
+	let _signInInputs;
 	
 	this.enter = () => {
 		document.body.innerHTML = template;
@@ -34,14 +36,16 @@ export function SignInPage(router, signInPage, nextPage, modal, strings, signing
 		_signInInputs = {nameOrEmail: inputs[0], password: inputs[1]};
 		document.getElementById("signInButton").onclick = () => signInButtonClicked();
 		_modal.bind();
-		if (_userActivation.can()) {
-			_userActivation.activate().then(response => userActivated(response))
+		if (_toActivateUser.can()) {
+			_toActivateUser.activate().then(response => userActivated(response))
 			.catch(exception => _modal.show(strings.value("signUpActivationFailureTitle"), exception));
 		}
 	};
 
 	function signInButtonClicked() {
-		_signingIn.perform(_signInInputs.nameOrEmail.value, _signInInputs.password.value).then(response => {
+		new ToSignInUser(_httpConnectionWithEndpoints, _strings, _signInInputs.nameOrEmail.value, _signInInputs.password.value)
+			.signIn()
+			.then(response => {
 			if (!response) {
 				_modal.show(strings.value("signInFailureTitle"), strings.value("signInFailureUserDoesNotExist"));
 				return;

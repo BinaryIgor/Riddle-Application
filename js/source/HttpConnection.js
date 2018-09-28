@@ -28,7 +28,6 @@ export function HttpConnection() {
 	const goodStatusMaxValue = 299;
 
 	function execute(url, method, data, token) {
-		console.log(`httpConnection, token = ${token}`);
 		return new Promise((resolve, reject) => {
 			let httpRequest = new XMLHttpRequest();
 			httpRequest.onload = function() {

@@ -1,10 +1,12 @@
-export function SignUpPage(router, modal, strings, signingUp) {
+import {ToSignUpUser} from "../user/ToSignUpUser.js";
+
+export function SignUpPage(router, modal, strings, httpConnectionWithEndpoints) {
 	
 	const template = 
 		`<div class="flex-container-full-screen">
 		<h1>Sign Up</h1>
 		<form class="center-full-width">
-			<input type="email" placeholder="${strings.value("email")}"></input>
+			<input type="text" placeholder="${strings.value("email")}"></input>
 			</br>
 			<input type="text" placeholder="${strings.value("name")}"></input>
 			</br>
@@ -19,7 +21,7 @@ export function SignUpPage(router, modal, strings, signingUp) {
 	const _router = router;
 	const _modal = modal;
 	const _strings = strings;
-	const _signingUp = signingUp;
+	const _httpConnectionWithEndpoints = httpConnectionWithEndpoints;
 	let _inputs;
 	
 	this.enter = () => {
@@ -33,7 +35,8 @@ export function SignUpPage(router, modal, strings, signingUp) {
 	};
 
 	function signUpButtonClicked() {
-		signingUp.perform(_inputs.email.value, _inputs.name.value, _inputs.password.value)
+		new ToSignUpUser(_httpConnectionWithEndpoints, _strings, _inputs.email.value, _inputs.name.value, _inputs.password.value)
+			.signUp()
 			.then(response => {
 				_inputs.email.value = _inputs.name.value = _inputs.password.value = "";
 				_modal.show(strings.value("signUpSuccessTitle"), strings.value("signUpSuccessText"));
