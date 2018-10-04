@@ -9,6 +9,7 @@ export function MainPage(router, profilePage, strings, tokens) {
 	const name = "main";
 	
 	const _router = router;
+	const _tokens = tokens;
 	
 	this.enter = () => {
 		document.body.innerHTML = template;
@@ -17,7 +18,7 @@ export function MainPage(router, profilePage, strings, tokens) {
 		//tiles[1].onclick = () => location.href = "#" + ROUTES.GAMES;
 		_tiles[2].onclick = () => _router.push(profilePage);
 		_tiles[3].onclick = () => {
-			tokens.delete();
+			_tokens.delete();
 			_router.replaceWithDefault();
 		};	
 	}

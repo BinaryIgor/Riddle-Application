@@ -1,4 +1,4 @@
-export function ProfilePage(router, strings, modal, userProfile) { 
+export function ProfilePage(router, strings, modal, userProfile, tokens) { 
 	
 	const template = 
 		`<div class="flex-container-full-screen-no-wrap">
@@ -35,6 +35,7 @@ export function ProfilePage(router, strings, modal, userProfile) {
 	const _strings = strings;
 	const _modal = modal;
 	const _userProfile = userProfile;
+	const _tokens = tokens;
 	let _image = {}, _tiles = [], _forms = [], _inputs = [], _buttons = [];
 	let _profileImgRotation = 90;
 	let _profile = {};
@@ -60,7 +61,7 @@ export function ProfilePage(router, strings, modal, userProfile) {
 			_image.src = URL.createObjectURL(this.files[0]);
 			_buttons.save.style.display = "inline";
 		};
-		readUserProfile();
+		getProfile(true);
 		_tiles.email.onclick = () => hideOrShow(_forms.email);
 		_tiles.name.onclick = () => hideOrShow(_forms.name);
 		_tiles.password.onclick = () => hideOrShow(_forms.password);
@@ -70,39 +71,56 @@ export function ProfilePage(router, strings, modal, userProfile) {
 	};
 	
 	//TODO multipart response for getting needed image
-	function readUserProfile() {
-		console.log(_userProfile);
+	function getProfile(render) {
 		_userProfile.profile().then(profile => {
 			if (!profile) {
 				_modal.show(strings.value("requestFailureTitle") , strings.value("noContent"));
 				return;
 			}
 			_profile = JSON.parse(profile);
-			_tiles.email.appendChild(document.createTextNode(_profile.email));
-			_tiles.name.appendChild(document.createTextNode(_profile.name));
-			_image.src = "images/background.jpg";
+			if (render) {
+				renderProfile();
+			}
 		}).catch(exception => _modal.show(strings.value("requestFailureTitle"), exception.message));
 	};
 	
+	function renderProfile() {
+		let children = _tiles.email.childNodes;
+		if (children.length < 1) {
+			_tiles.email.appendChild(document.createTextNode(_profile.email));
+		} else {
+			_tiles.email.replaceChild(document.createTextNode(_profile.email), children[0]);
+		}
+		children = _tiles.name.childNodes;
+		if (children.length < 1) {
+			_tiles.name.appendChild(document.createTextNode(_profile.name));
+		} else {
+			_tiles.name.replaceChild(document.createTextNode(_profile.name), children[0]);
+		}
+		_image.src = "images/background.jpg";
+	}
+	
 	function saveEmail() {
-		_userProfile.saveEmail(_inputs.email.value).then(response => _modal.show(strings.value("editEmailSuccess")))
-			.catch(exception => _modal.show(strings.value("editProfileFailure"), exception.message));
+		_userProfile.saveEmail(_inputs.email.value).then(response => {
+			getProfile(true);
+			_modal.show(strings.value("editEmailSuccess"));
+		}).catch(exception => _modal.show(strings.value("editProfileFailure"), exception.message));
 	};
 	
 	function saveName() {
-		_userProfile.saveName(_inputs.name.value).then(response => _modal.show(strings.value("editNameSuccess")))
-			.catch(exception => _modal.show(strings.value("editProfileFailure"), exception.message));
+		_userProfile.saveName(_inputs.name.value).then(response => {
+			let tokensData = JSON.parse(response);
+			_tokens.save(tokensData);
+			getProfile(true);
+			_modal.show(strings.value("editNameSuccess"));
+		}).catch(exception => _modal.show(strings.value("editProfileFailure"), exception.message));
 	};
 	
 	function savePassword() {
-		_userProfile.savePassword(_inputs.password.value).then(response => _modal.show(strings.value("editPasswordSuccess")))
-			.catch(exception => _modal.show(strings.value("editProfileFailure"), exception.message));
-	};
-	
-	function changeProfile(changedProfile) {
-		_authenticatedHttpConnectionWithEndpoints.executePost("userProfile", changedProfile).then(response => {
-			
-		}).catch(exception => _modal.show(strings.value("requestFailureTitle"), exception.message));
+		_userProfile.savePassword(_inputs.password.value).then(response => {
+			getProfile(false);
+			_modal.show(strings.value("editPasswordSuccess"));
+		}).catch(exception => _modal.show(strings.value("editProfileFailure"), exception.message));
 	};
 	
 	function hideOrShow(element) {

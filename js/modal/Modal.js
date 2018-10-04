@@ -25,7 +25,7 @@ export function Modal() {
 	
 	this.show = (title, text) => {
 		modalTitle.innerHTML = title;
-		modalText.innerHTML = text;
+		modalText.innerHTML = text? text : "";
 		modal.style.display = "flex";
 	};
 	

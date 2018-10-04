@@ -1,34 +1,26 @@
+//TODO validate token lifetime nad refresh it accordingly
 export function AuthenticatedHttpConnectionWithEndpoints(tokens, httpConnectionWithEndpoints) {
 
 	const _tokens = tokens;
 	const _httpConnectionWithEndpoints = httpConnectionWithEndpoints;
-	let _tokensData = {};
 	
 	this.executeGet = (endpointKey) => {
-		if (Object.keys(_tokensData).length < 1) {
-			_tokensData = _tokens.readTokens();
-		}
-		return _httpConnectionWithEndpoints.executeGet(endpointKey, _tokensData.accessToken);
+		let tokensData = _tokens.tokens();
+		return _httpConnectionWithEndpoints.executeGet(endpointKey, tokensData.accessToken);
 	};
 	
 	this.executePost = (endpointKey, data) => {
-		if (Object.keys(_tokensData).length < 1) {
-			_tokensData = _tokens.readTokens();
-		}
-		return _httpConnectionWithEndpoints.executePost(endpointKey, data, _tokensData.accessToken);
+		let tokensData = _tokens.tokens();
+		return _httpConnectionWithEndpoints.executePost(endpointKey, data, tokensData.accessToken);
 	};
 	
 	this.executePut = (endpointKey, data) => {
-		if (Object.keys(_tokensData).length < 1) {
-			_tokensData = _tokens.readTokens();
-		}
-		return _httpConnectionWithEndpoints.executePut(endpointKey, data, _tokensData.accessToken);
+		let tokensData = _tokens.tokens();
+		return _httpConnectionWithEndpoints.executePut(endpointKey, data, tokensData.accessToken);
 	};
 	
 	this.executeDelete = (endpointKey, token) => {
-		if (Object.keys(_tokensData).length < 1) {
-			_tokensData = _tokens.readTokens();
-		}
-		return _httpConnectionWithEndpoints.executeDelete(endpointKey, "", _tokensData.accessToken);
+		let tokensData = _tokens.tokens();
+		return _httpConnectionWithEndpoints.executeDelete(endpointKey, "", tokensData.accessToken);
 	};
 }

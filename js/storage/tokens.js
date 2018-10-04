@@ -21,7 +21,7 @@ export function Tokens() {
 		sessionStorage.removeItem(expirationDateKey);
 	};
 	
-	this.readTokens = () => {
+	this.tokens = () => {
 		let accessToken = sessionStorage.getItem(accessTokenKey);
 		let expirationDate = sessionStorage.getItem(expirationDateKey);
 		let refreshToken = sessionStorage.getItem(refreshTokenKey);

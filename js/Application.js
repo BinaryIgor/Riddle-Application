@@ -32,7 +32,7 @@ const inputModal = new InputModal(strings);
 
 const router = new Router();
 
-const profilePage = new ProfilePage(router, strings, modal, new UserProfile(authenticatedHttpConnectionWithEndpoints, strings));
+const profilePage = new ProfilePage(router, strings, modal, new UserProfile(authenticatedHttpConnectionWithEndpoints, strings), tokens);
 router.add(profilePage);
 
 const mainPage = new MainPage(router, profilePage.name(), strings, tokens);
