@@ -61,7 +61,7 @@ export function ProfilePage(router, strings, modal, userProfile, tokens) {
 			_image.src = URL.createObjectURL(this.files[0]);
 			_buttons.save.style.display = "inline";
 		};
-		getProfile(true);
+		getProfile();
 		_tiles.email.onclick = () => hideOrShow(_forms.email);
 		_tiles.name.onclick = () => hideOrShow(_forms.name);
 		_tiles.password.onclick = () => hideOrShow(_forms.password);
@@ -71,16 +71,14 @@ export function ProfilePage(router, strings, modal, userProfile, tokens) {
 	};
 	
 	//TODO multipart response for getting needed image
-	function getProfile(render) {
+	function getProfile() {
 		_userProfile.profile().then(profile => {
 			if (!profile) {
 				_modal.show(strings.value("requestFailureTitle") , strings.value("noContent"));
 				return;
 			}
 			_profile = JSON.parse(profile);
-			if (render) {
-				renderProfile();
-			}
+			renderProfile();
 		}).catch(exception => _modal.show(strings.value("requestFailureTitle"), exception.message));
 	};
 	
@@ -98,11 +96,14 @@ export function ProfilePage(router, strings, modal, userProfile, tokens) {
 			_tiles.name.replaceChild(document.createTextNode(_profile.name), children[0]);
 		}
 		_image.src = "images/background.jpg";
+		_inputs.name.value = "";
+		_inputs.email.value = "";
+		_inputs.password.value = "";
 	}
 	
 	function saveEmail() {
 		_userProfile.saveEmail(_inputs.email.value).then(response => {
-			getProfile(true);
+			getProfile();
 			_modal.show(strings.value("editEmailSuccess"));
 		}).catch(exception => _modal.show(strings.value("editProfileFailure"), exception.message));
 	};
@@ -111,14 +112,14 @@ export function ProfilePage(router, strings, modal, userProfile, tokens) {
 		_userProfile.saveName(_inputs.name.value).then(response => {
 			let tokensData = JSON.parse(response);
 			_tokens.save(tokensData);
-			getProfile(true);
+			getProfile();
 			_modal.show(strings.value("editNameSuccess"));
 		}).catch(exception => _modal.show(strings.value("editProfileFailure"), exception.message));
 	};
 	
 	function savePassword() {
 		_userProfile.savePassword(_inputs.password.value).then(response => {
-			getProfile(false);
+			getProfile();
 			_modal.show(strings.value("editPasswordSuccess"));
 		}).catch(exception => _modal.show(strings.value("editProfileFailure"), exception.message));
 	};

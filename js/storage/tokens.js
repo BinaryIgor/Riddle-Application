@@ -21,17 +21,10 @@ export function Tokens() {
 		sessionStorage.removeItem(expirationDateKey);
 	};
 	
-	this.tokens = () => {
-		let accessToken = sessionStorage.getItem(accessTokenKey);
-		let expirationDate = sessionStorage.getItem(expirationDateKey);
-		let refreshToken = sessionStorage.getItem(refreshTokenKey);
-		if(!accessToken || !expirationDate || !refreshToken) {
-			throw "incomplete tokens data!";
-		}
-		return {
-			accessToken: accessToken,
-			expirationDate: expirationDate,
-			refreshToken: refreshToken
-		};
-	};
+	this.accessToken = () => sessionStorage.getItem(accessTokenKey);
+	
+	this.expirationDate = () => sessionStorage.getItem(expirationDateKey);
+	
+	this.refreshToken = () => sessionStorage.getItem(refreshTokenKey);
+	
 };
